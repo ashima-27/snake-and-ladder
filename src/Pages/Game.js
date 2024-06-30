@@ -41,7 +41,7 @@ const Game = () => {
  }, []);
   const rollDice = () => {
     if (isRolling) return;
-
+    toast.dismiss()
     setIsRolling(true);
     const diceRoll =  Math.floor(Math.random() * 6) + 1;
     setDiceResult(diceRoll);
@@ -230,9 +230,9 @@ const Game = () => {
     <div className="flex flex-col items-center m-2 justify-center">
   <ToastContainer
     position="top-right"
-    autoClose={3000}
+    autoClose={5000}
     hideProgressBar={false}
-    newestOnTop={false}
+    newestOnTop={true}
     closeOnClick={true}
     rtl={false}
     pauseOnFocusLoss
