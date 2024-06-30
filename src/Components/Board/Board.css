@@ -1,0 +1,20 @@
+.stone-border {
+  position: relative;
+  padding: 20px;
+  background: url('../../assets/stone.avif') border-box;
+  border-radius: 6px;
+  overflow: hidden; /* Ensures child elements follow the border radius */
+}
+
+.stone-border::after {
+  content: '';
+  position: absolute;
+  top: -20px; /* Equal to the border width */
+  left: -20px; /* Equal to the border width */
+  right: -20px; /* Equal to the border width */
+  bottom: -20px; /* Equal to the border width */
+  background: url('../../assets/stone.avif') center/cover no-repeat;
+  border-radius: inherit;
+  pointer-events: none;
+  z-index: -1;
+}
