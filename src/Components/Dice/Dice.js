@@ -41,32 +41,32 @@ const Dice = ({ number, color }) => {
   return (
     <div className="relative w-20 h-20 rounded-md bg-white shadow-md transform rotate-x-12" style={{ transform: `rotate(${rotation}deg)` }}>
       <div className="absolute top-0 left-0 w-full h-full flex items-center justify-center transform -rotate-x-12">
-        <div className={`relative w-full h-full flex justify-center items-center bg-${color}-900 rounded-md`}>
+        <div className={`relative w-full h-full flex justify-center items-center rounded-md`} style={{backgroundColor:`${color}`}}>
           <div className="text-4xl font-bold text-white">{number}</div>
         </div>
       </div>
       <div className="absolute top-0 left-0 w-full h-full flex items-center justify-center transform rotate-x-12">
-        <div className={`relative w-full h-full flex justify-center items-center bg-${color}-900 rounded-md`}>
+        <div className={`relative w-full h-full flex justify-center items-center rounded-md`} style={{backgroundColor:`${color}`}}>
           <div className="text-4xl font-bold text-white">{number}</div>
         </div>
       </div>
       <div className="absolute top-0 left-0 w-full h-full flex items-center justify-center transform rotate-y-12">
-        <div className={`relative w-full h-full flex justify-center items-center bg-${color}-900 rounded-md`}>
+        <div className={`relative w-full h-full flex justify-center items-center rounded-md`} style={{backgroundColor:`${color}`}}>
           <div className="text-4xl font-bold text-white">{number}</div>
         </div>
       </div>
       <div className="absolute top-0 left-0 w-full h-full flex items-center justify-center transform -rotate-y-12">
-        <div className={`relative w-full h-full flex justify-center items-center bg-${color}-900 rounded-md`}>
+        <div className={`relative w-full h-full flex justify-center items-center rounded-md`} style={{backgroundColor:`${color}`}}>
           <div className="text-4xl font-bold text-white">{number}</div>
         </div>
       </div>
       <div className="absolute top-0 left-0 w-full h-full flex items-center justify-center transform -rotate-12">
-        <div className={`relative w-full h-full flex justify-center items-center bg-${color}-900 rounded-md`}>
+        <div className={`relative w-full h-full flex justify-center items-center rounded-md`} style={{backgroundColor:`${color}`}}>
           <div className="text-4xl font-bold text-white">{number}</div>
         </div>
       </div>
       <div className="absolute top-0 left-0 w-full h-full flex items-center justify-center transform rotate-12">
-        <div className={`relative w-full h-full flex justify-center items-center bg-${color}-900 rounded-md`}>
+        <div className={`relative w-full h-full flex justify-center items-center rounded-md`} style={{backgroundColor:`${color}`}}>
           <div className="text-4xl font-bold text-white">{number}</div>
         </div>
       </div>

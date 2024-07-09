@@ -6,10 +6,19 @@ const PlayerModal = ({ isOpen, onClose, onPlayersSelected }) => {
   const [numPlayers, setNumPlayers] = useState(2);
   const [selectedColors, setSelectedColors] = useState(['blue', 'red']); 
 
-  const availableColors = ['blue', 'red', 'yellow', 'green'];
+  const availableColors = ['blue', 'purple', 'yellow', 'orange'];
 
   const handleNumPlayersChange = (e) => {
     const num = parseInt(e.target.value);
+    if (num < 2 ) {
+      toast.error('Minimum 2 players are required.'); 
+      return;
+    }
+   
+    if (num > 4 ) {
+      toast.error('Max 4 players are required.'); 
+      return;
+    }
     setNumPlayers(num);
     setSelectedColors(availableColors.slice(0, num));
   };
@@ -21,10 +30,7 @@ const PlayerModal = ({ isOpen, onClose, onPlayersSelected }) => {
   };
 
   const handleConfirm = () => {
-    if (numPlayers < 2) {
-      toast.error('Minimum 2 players are required.'); 
-      return;
-    }
+  
     onPlayersSelected(numPlayers, selectedColors);
     onClose();
   };

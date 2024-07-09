@@ -1,4 +1,4 @@
-import React, { useState ,useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import Board from '../Components/Board/Board';
 import Player from '../Components/Player/Player';
 import Dice from '../Components/Dice/Dice';
@@ -8,13 +8,12 @@ import 'react-toastify/dist/ReactToastify.css';
 import PlayerModal from '../Modal/onMountModal';
 import GameOverModal from '../Modal/GameOver';
 
-
 const Game = () => {
   const [cells] = useState([...Array(100).keys()].map(n => 100 - n));
   const [snakes, setSnakes] = useState({});
   const [ladders, setLadders] = useState({});
   const [players, setPlayers] = useState([]);
-   const [currentPlayer, setCurrentPlayer] = useState(0);
+  const [currentPlayer, setCurrentPlayer] = useState(0);
   const [diceResult, setDiceResult] = useState(null);
   const [isRolling, setIsRolling] = useState(false);
   const [gameStarted, setGameStarted] = useState([false, false]);
@@ -22,42 +21,51 @@ const Game = () => {
   const [isGameOver, setIsGameOver] = useState(false); 
   const [winner, setWinner] = useState(null); 
 
- const [modalOpen, setModalOpen] = useState(true);
- const handlePlayersSelected = (numPlayers, colors) => {
-   const initialPlayers = Array.from({ length: numPlayers }, (_, index) => ({
-     id: index + 1,
-     position: 1,
-     color: colors[index % colors.length],
-   }));
-   setPlayers(initialPlayers);
-   setGameStarted(new Array(numPlayers).fill(false));
-   setConsecutiveSixes(new Array(numPlayers).fill(0));
-   setModalOpen(false);
- };
+  const [modalOpen, setModalOpen] = useState(true);
 
+  const toastConfig = {
+    autoClose: true, 
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: true,
+    draggable: true
+  };
 
- useEffect(() => {
-   setModalOpen(true);
- }, []);
+  const handlePlayersSelected = (numPlayers, colors) => {
+    const initialPlayers = Array.from({ length: numPlayers }, (_, index) => ({
+      id: index + 1,
+      position: 1,
+      color: colors[index % colors.length],
+    }));
+    setPlayers(initialPlayers);
+    setGameStarted(new Array(numPlayers).fill(false));
+    setConsecutiveSixes(new Array(numPlayers).fill(0));
+    setModalOpen(false);
+  };
+
+  useEffect(() => {
+    setModalOpen(true);
+  }, []);
+
   const rollDice = () => {
     if (isRolling) return;
-    toast.dismiss()
+     toast.dismiss();
     setIsRolling(true);
-    const diceRoll =  Math.floor(Math.random() * 6) + 1;
+    const diceRoll = Math.floor(Math.random() * 6) + 1;
     setDiceResult(diceRoll);
-   
+
     if (players[currentPlayer].position === 1 && !gameStarted[currentPlayer]) {
       if (diceRoll === 1 || diceRoll === 6) {
-        toast.success(`Player ${players[currentPlayer].id} rolled a ${diceRoll}  🎉 and the game has started !`);
+        toast.success(`Player ${players[currentPlayer].id} rolled a ${diceRoll} 🎉 and the game has started!`, toastConfig);
+      
         setGameStarted(prev => {
           const newGameStarted = [...prev];
           newGameStarted[currentPlayer] = true;
           return newGameStarted;
         });
         movePlayer(0);
-   
       } else {
-        toast.info(`Player ${players[currentPlayer].id} needs a 1 or 6 to start.`);
+        toast.info(`Player ${players[currentPlayer].id} needs a 1 or 6 to start.`, toastConfig);
         setIsRolling(false);
         setCurrentPlayer((currentPlayer + 1) % players.length);
       }
@@ -73,15 +81,10 @@ const Game = () => {
     const generatePositions = () => {
       const snakePositions = {};
       const ladderPositions = {};
-    
-     
+
       const positions = Array.from({ length: 97 }, (_, index) => index + 4);
-    
-      const isPositionTaken = (position) => {
-        return snakePositions[position] || ladderPositions[position];
-      };
-    
-   
+      const isPositionTaken = (position) => snakePositions[position] || ladderPositions[position];
+
       while (Object.keys(snakePositions).length < 7) {
         const start = Math.floor(Math.random() * 97) + 4;
         if (!isPositionTaken(start)) {
@@ -89,8 +92,7 @@ const Game = () => {
           snakePositions[start] = end;
         }
       }
-    
-     
+
       while (Object.keys(ladderPositions).length < 7) {
         const start = Math.floor(Math.random() * 94) + 7;
         if (!isPositionTaken(start)) {
@@ -98,21 +100,19 @@ const Game = () => {
           ladderPositions[start] = end;
         }
       }
-    
+
       return { snakes: snakePositions, ladders: ladderPositions };
     };
-    
-  
+
     const { snakes, ladders } = generatePositions();
-  
     setSnakes(snakes);
     setLadders(ladders);
   }, []);
-  
-  useEffect(()=>{
-    console.log("jk",snakes,ladders)
-  },[])
-  
+
+  useEffect(() => {
+    console.log("Snakes and Ladders positions", snakes, ladders);
+  }, [snakes, ladders]);
+
   const movePlayer = (diceRoll) => {
     let newPosition = players[currentPlayer].position + diceRoll;
     let encountered = '';
@@ -137,62 +137,50 @@ const Game = () => {
 
     setPlayers(newPlayers);
     if (encountered === 'snake') {
-      const snakeStart = snakes[newPosition];
-      const snakeEnd = newPosition;
-      toast.warn(`Player ${players[currentPlayer].id} got bitten by a snake 🐍 Moved to ${snakeEnd} position!`);
+      toast.warn(`Player ${players[currentPlayer].id} got bitten by a snake 🐍 Moved to position ${newPosition}!`, toastConfig);
     } else if (encountered === 'ladder') {
-      const ladderStart = ladders[newPosition];
-      const ladderEnd = newPosition;
-      toast.success(`Player ${players[currentPlayer].id} climbed a ladder 🪜 Moved to ${ladderEnd} position!`);
+      toast.success(`Player ${players[currentPlayer].id} climbed a ladder 🪜 Moved to position ${newPosition}!`, toastConfig);
     } else {
-      toast.info(`Player ${players[currentPlayer].id} moved to position ${newPosition} 🎲`);
+      toast.info(`Player ${players[currentPlayer].id} moved to position ${newPosition} 🎲`, toastConfig);
     }
-    
 
     if (newPosition === 100) {
-      toast.success(`Player ${players[currentPlayer].id} reached position 100! 🎉 Game Over!`);
+      toast.success(`Player ${players[currentPlayer].id} reached position 100! 🎉 Game Over!`, toastConfig);
       const winnerPlayer = players[currentPlayer];
-      setWinner(winnerPlayer); 
-      setIsGameOver(true); 
+      setWinner(winnerPlayer);
+      setIsGameOver(true);
 
       setPlayers([]);
       setCurrentPlayer(0);
       setDiceResult(null);
       setIsRolling(false);
-      toast.dismiss()
       setGameStarted([false, false]);
-      
-    
-    } else if (diceRoll === 6 || diceRoll=== 0) {
-      toast.info(`Player ${players[currentPlayer].id} rolled a 6 and gets another turn! 🎲`);
+    } else if (diceRoll === 6 || diceRoll === 0) {
+      toast.info(`Player ${players[currentPlayer].id} rolled a 6 and gets another turn! 🎲`, toastConfig);
       setConsecutiveSixes(prev => {
         const newConsecutiveSixes = [...prev];
         newConsecutiveSixes[currentPlayer] += 1;
         return newConsecutiveSixes;
       });
-      console.log("cc",consecutiveSixes[currentPlayer])
       if (consecutiveSixes[currentPlayer] === 2) {
-        toast.warn(`Player ${players[currentPlayer].id} rolled three 6s in a row and returns to their previous position.`);
-       console.log("diceroll", diceRoll)
+        toast.warn(`Player ${players[currentPlayer].id} rolled three 6s in a row and returns to their previous position.`, toastConfig);
         setPlayers(prevPlayers => {
           const updatedPlayers = [...prevPlayers];
           if (!gameStarted[currentPlayer]) {
-            console.log("gameStarted[currentPlayer]",gameStarted[currentPlayer])
             updatedPlayers[currentPlayer].position = Math.max(1, updatedPlayers[currentPlayer].position - 13);
             setGameStarted(prev => {
               const newGameStarted = [...prev];
-              newGameStarted[currentPlayer] = false; 
+              newGameStarted[currentPlayer] = false;
               return newGameStarted;
             });
           } else {
             updatedPlayers[currentPlayer].position = Math.max(1, updatedPlayers[currentPlayer].position - 18);
           }
-        
           return updatedPlayers;
         });
         setConsecutiveSixes(prev => {
           const newConsecutiveSixes = [...prev];
-          newConsecutiveSixes[currentPlayer] = 0; 
+          newConsecutiveSixes[currentPlayer] = 0;
           return newConsecutiveSixes;
         });
         setCurrentPlayer((currentPlayer + 1) % players.length);
@@ -218,26 +206,17 @@ const Game = () => {
     setGameStarted([false, false]);
     setConsecutiveSixes([0, 0]);
     toast.dismiss();
-    setIsGameOver(false); 
-    setModalOpen(true)
-    toast.success('Game Restarted!');
+    setIsGameOver(false);
+    setModalOpen(true);
+    toast.success('Game Restarted!', toastConfig);
   };
-
 
   return (
     <>
     
     <div className="flex flex-col items-center m-2 justify-center">
-  <ToastContainer
-    position="top-right"
-    autoClose={5000}
-    hideProgressBar={false}
-    newestOnTop={true}
-    closeOnClick={true}
-    rtl={false}
-    pauseOnFocusLoss
-    draggable
-    pauseOnHover
+  <ToastContainer stacked
+   
   />
  <PlayerModal isOpen={modalOpen} onClose={() => setModalOpen(false)} onPlayersSelected={handlePlayersSelected} />
  <GameOverModal isOpen={isGameOver} winner={winner} onClose={() => setIsGameOver(false)} />

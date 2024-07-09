@@ -10,7 +10,7 @@ const Player = ({ name, color }) => {
 
   return (
     <div className={`flex items-center justify-center  w-auto p-3 h-12 `}>
-      <div className={`h-8 w-8 bg-${color}-900 p-2`}></div>
+      <div className={`h-8 w-8 p-2`} style={{backgroundColor:`${color}`}}></div>
       <p className="text-black-800 p-2">{name}</p>
     </div>
   );

@@ -47,18 +47,15 @@ const Board = ({ cells, snakes, ladders, players }) => {
         {snakeTailEntry && <div className="absolute rounded-lg bottom-0 left-0 text-xs text-white bg-red-600 m-1 p-1 font-bold">{`${snakeTailEntry[1]}`} 🐍</div>}
         {ladderBottomEntry && <div className="absolute top-0 rounded-lg right-0 text-xs text-white bg-green-600 font-bold m-1 p-1">{`${ladderBottomEntry[1]}`} 🪜</div>}
         {player && (
-          <div className={`absolute text-white m-2 font-bold bg-white-50 z-10 p-1 ${playerColors[players.indexOf(player)]}`}>
-            P{players.indexOf(player) + 1}
-          </div>
+         
+          <div className={`absolute text-white m-2 font-bold  z-10 p-1`} style={{backgroundColor:`${player.color}`}}>
+    P{players.indexOf(player) + 1}
+  </div>
         )}
       </div>
     );
   };
-
-  const playerColors = [
-    "bg-blue-900",
-    "bg-yellow-900"
-  ];
+ 
 
   return (
     <div className="p-2 bg-yellow-600 stone-border rounded-lg w-full mt-5">
