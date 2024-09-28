@@ -37,7 +37,7 @@ const PlayerModal = ({ isOpen, onClose, onPlayersSelected }) => {
 
   return (
     <div className={`fixed z-10 inset-0 overflow-y-auto ${isOpen ? 'block' : 'hidden'}`}>
-      <ToastContainer /> {/* ToastContainer for displaying toasts */}
+      <ToastContainer /> 
       <div className="flex items-center justify-center min-h-screen stone-border">
         <div className="modal-overlay absolute w-full h-full bg-gray-900 opacity-50"></div>
         <div className="modal-container bg-white w-11/12 md:max-w-md mx-auto rounded shadow-lg z-50 overflow-y-auto">
